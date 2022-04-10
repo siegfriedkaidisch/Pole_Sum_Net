@@ -48,14 +48,14 @@ from parameters import max_steps_regressor
 ##############################################################################
 if __name__ == '__main__':
     ##########   Parse hyperparameters, if wanted   ##########################
-    #'''
+    '''
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch_size_regressor', type=float, default=batch_size_regressor)
     parser.add_argument('--learning_rate_regressor', type=int, default=learning_rate_regressor)  
     args = parser.parse_args()
     batch_size_regressor = args.batch_size_regressor
     learning_rate_regressor = args.learning_rate_regressor
-    #'''
+    '''
     ##########################################################################
     time1 = time.time()
     seed_everything(seed=1234)  #standard: 1234

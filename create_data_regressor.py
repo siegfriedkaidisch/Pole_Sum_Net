@@ -17,13 +17,14 @@ from parameters import re_max, re_min, im_max, im_min, coeff_re_max, coeff_re_mi
 
 
 if __name__ == '__main__':
-
+    seed_everything(seed=1234)  #standard: 1234
+    time1 = time.time()
     create_training_data_regressor(length=n_examples_regressor, pole_class=class_regressor, 
                          grid_x=standard_re, data_dir=data_dir_regressor,
                          re_max=re_max, re_min=re_min, im_max=im_max, im_min=im_min, 
                          coeff_re_max=coeff_re_max, coeff_re_min=coeff_re_min, 
                          coeff_im_max=coeff_im_max, coeff_im_min=coeff_im_min)
-
+    print(time.time() - time1)
 
 
 

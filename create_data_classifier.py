@@ -18,7 +18,7 @@ from parameters import re_max, re_min, im_max, im_min, coeff_re_max, coeff_re_mi
 from parameters import method_classifier, with_bounds_classifier
 
 if __name__ == '__main__':
-    #seed_everything(seed=1234)  #standard: 1234
+    seed_everything(seed=1234)  #standard: 1234
     time1 = time.time()
     create_training_data_classifier(length=n_examples_classifier, grid_x=standard_re,
                                 re_max=re_max, re_min=re_min, im_max=im_max, im_min=im_min, 
