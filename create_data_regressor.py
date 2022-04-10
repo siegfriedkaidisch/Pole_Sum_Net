@@ -8,6 +8,9 @@ Created on Sat Aug 22 08:18:39 2020
 Complex singluarity data generation code: Generate data for the regressor
 
 """
+import time
+from pytorch_lightning.utilities.seed import seed_everything
+
 from lib.training_data_generation_regressor import create_training_data_regressor
 
 from parameters import class_regressor, data_dir_regressor
