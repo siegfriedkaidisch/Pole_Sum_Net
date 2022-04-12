@@ -37,7 +37,7 @@ sigma_V = fun_sigma_V(A, B, p2)
 #plt.xscale('log')
 #plt.show()
 
-### Interpolate to our p2 grid (take log of x-axis -> interpolate -> take exp)
+### Interpolate to our p2 grid (take log of x-axis -> interpolate)
 my_p2 = pd.read_csv(os.path.join(data_dir, "integration_gridpoints.csv")).to_numpy().reshape(-1)
 fun_interpolate_sigma_S = interpolate.interp1d(np.log(p2), sigma_S, kind='linear')
 my_sigma_S = fun_interpolate_sigma_S(np.log(my_p2))
