@@ -253,10 +253,11 @@ def create_training_data_classifier(length, grid_x,
     returns: None, if stage=='creation'
              numpy.ndarray of shape (m,n), if stage=='application'
     '''
-    if length < 18:
-        raise ValueError('length must be at least 18!')
     
     if stage == 'creation':
+        if length < 18:
+            raise ValueError('length must be at least 18!')
+
         # List of the pole classes
         pole_classes = [0,1,2,3,4,5,6,7,8]
         
