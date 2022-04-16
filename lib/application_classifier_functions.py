@@ -29,7 +29,7 @@ def get_classifier_preds(grid_x, data_y,
     grid_x: ndarray of shape (n,) or (1,n), where n is the number of gridpoints
         Gridpoints
     
-    data_y: ndarray of shape (n,) or (m,n), where n is the number of gridpoints
+    data_y: ndarray of shape (n,) or (m,2*n), where n is the number of gridpoints
         Function Values
 
     re_max, re_min, im_max, im_min, coeff_re_max, coeff_re_min, coeff_im_max, coeff_im_min: numeric

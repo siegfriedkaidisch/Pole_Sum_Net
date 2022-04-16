@@ -19,7 +19,7 @@ def get_regressor_pred(data_y, model_path):
     '''
     Get predictions from a trained Pole Regressor
     
-    data_y: ndarray of shape (n,) or (m,n), where m is the number of samples
+    data_y: ndarray of shape (n,) or (m,2*n), where m is the number of samples
         Y-values/Curve, whose parameters are to be found; multiple (m) at the same time are possible
     
     model_path: str
