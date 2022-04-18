@@ -196,6 +196,11 @@ drop_prob_6_regressor  = 0.0
 # do multiple runs?
 num_runs_regressor           = 5
 
+##############################################################################
+##############   Application   ###############################################
+##############################################################################
+# Directory containing the data of interest, defaults to data_dir
+application_data_dir = data_dir
 
 
 

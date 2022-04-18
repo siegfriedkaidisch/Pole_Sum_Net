@@ -13,7 +13,7 @@ from scipy import interpolate
 import numpy as np
 import os
 
-from parameters import data_dir
+from parameters import application_data_dir
 
 def fun_sigma_S(A, B, p2):
     # A, B and p2 must be ndarrays of shape (n,)
@@ -24,7 +24,7 @@ def fun_sigma_V(A, B, p2):
     return B/( A**2*p2 + B**2 )
 
 ### Import data
-data = pd.read_pickle(os.path.join(data_dir, 'data.pkl'))
+data = pd.read_pickle(os.path.join(application_data_dir, 'data.pkl'))
 p2 = data["data"]["p2"]
 A = data["data"]["A"]
 B = data["data"]["B"]
@@ -38,7 +38,7 @@ sigma_V = fun_sigma_V(A, B, p2)
 #plt.show()
 
 ### Interpolate to our p2 grid (take log of x-axis -> interpolate)
-my_p2 = pd.read_csv(os.path.join(data_dir, "integration_gridpoints.csv")).to_numpy().reshape(-1)
+my_p2 = pd.read_csv(os.path.join(application_data_dir, "integration_gridpoints.csv")).to_numpy().reshape(-1)
 fun_interpolate_sigma_S = interpolate.interp1d(np.log(p2), sigma_S, kind='linear')
 my_sigma_S = fun_interpolate_sigma_S(np.log(my_p2))
 fun_interpolate_sigma_V = interpolate.interp1d(np.log(p2), sigma_V, kind='linear')
