@@ -592,7 +592,7 @@ def objective_2r1c_jac_dual(x, a, c1, c2, e, g1, g2, i, j, k1, l1, k2, l2):
         The Jacobi matrix
     '''
     jac1   = objective_1r_jac_dual(x, a, c1, c2)
-    jac2   = objective_1r_jac_dual(x, e, g1, c2)
+    jac2   = objective_1r_jac_dual(x, e, g1, g2)
     jac3   = objective_1c_jac_dual(x, i, j, k1, l1, k2, l2)
     jacmat = np.hstack([jac1, jac2, jac3])
     return jacmat
