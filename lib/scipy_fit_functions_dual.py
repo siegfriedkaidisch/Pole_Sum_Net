@@ -98,17 +98,17 @@ def get_scipy_pred_dual(pole_class, grid_x, data_y,
             upper = [re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
     
         if not p0_data is None:
-            lower = np.maximum(p0_data[0]-p0_data[1], lower).ravel()
-            upper = np.minimum(p0_data[0]+p0_data[1], upper).ravel()
-        return lower, upper
-
+            lower_p0 = np.maximum(p0_data[0]-p0_data[1], lower).ravel()
+            upper_p0 = np.minimum(p0_data[0]+p0_data[1], upper).ravel()
+        return lower, upper, lower_p0, upper_p0
+                
     def get_p0(lower, upper):
         return np.random.uniform(np.array(lower), np.array(upper))
 
-    lower, upper = get_bounds(pole_class, p0_data)
-    for maxfev_i in maxfev:                
+    lower, upper, lower_p0, upper_p0 = get_bounds(pole_class, p0_data)
+    for maxfev_i in maxfev:            
         for num_try in range(num_tries): #retry fit num_tries times (with different random p0)
-            p0_new = get_p0(lower, upper) 
+            p0_new = get_p0(lower_p0, upper_p0)  
             try:
                 if pole_class == 0:                
                     params_tmp, _ = curve_fit(objective_1r_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_1r_jac_dual, xtol=xtol, method=method) if with_bounds else \
