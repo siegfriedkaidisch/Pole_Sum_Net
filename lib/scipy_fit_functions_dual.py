@@ -25,7 +25,8 @@ def get_scipy_pred_dual(pole_class, grid_x, data_y,
                    re_max, re_min, im_max, im_min, 
                    coeff_re_max, coeff_re_min, 
                    coeff_im_max, coeff_im_min,
-                   method='lm', with_bounds=False
+                   method='lm', with_bounds=False, 
+                   p0_data = np.nan
                    ):
     '''
     Uses Scipy curve_fit to fit different pole classes onto single (!) data sample
@@ -46,6 +47,9 @@ def get_scipy_pred_dual(pole_class, grid_x, data_y,
 
     with_bounds: bool, default=False
         Shall the fit's parameters be contrained by bounds determined by coeff_re_max, coeff_re_min, coeff_im_max, coeff_im_min, re_min, re_max, im_min, im_max?
+        
+    p0_data: list of 2 numpy.ndarrays of shapes (k,), where k depends on the pole class OR np.nan; default: np.nan
+        Optional: Set initial parameter-guesses between p0_data[0]-p0_data[1] and p0_data[0]+p0_data[1]; Note: p0_data[1] should only contain zeros or positive numbers
      
     returns: numpy.ndarray of shape (k,)
         Optimized parameters of the chosen pole class or nans if the fit failed
@@ -63,73 +67,82 @@ def get_scipy_pred_dual(pole_class, grid_x, data_y,
     drop_outside_bounds = with_bounds
     if method == 'lm':
         with_bounds = False
-             
+        
+    def get_bounds(pole_class, p0_data):
+        if pole_class == 0:
+            lower = [re_min, -coeff_re_max, -coeff_re_max]
+            upper = [re_max, coeff_re_max, coeff_re_max] 
+        elif pole_class == 1:
+            lower = [re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
+            upper = [re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]   
+        elif pole_class == 2:
+            lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max]
+            upper = [re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max]   
+        elif pole_class == 3:
+            lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
+            upper = [re_max, coeff_re_max, coeff_re_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
+        elif pole_class == 4:
+            lower = [re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
+            upper = [re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
+        elif pole_class == 5:
+            lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max]
+            upper = [re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max]
+        elif pole_class == 6:
+            lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
+            upper = [re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
+        elif pole_class == 7:
+            lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
+            upper = [re_max, coeff_re_max, coeff_re_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
+        elif pole_class == 8:
+            lower = [re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
+            upper = [re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
+    
+        if not np.isnan(p0_data):
+            lower = np.maximum(p0_data[0]-p0_data[1], lower)
+            upper = np.minimum(p0_data[0]+p0_data[1], upper)
+        return lower, upper
+                
     def get_p0(lower, upper):
         return np.random.uniform(np.array(lower), np.array(upper))
 
+    lower, upper = get_bounds(pole_class, p0_data)
     for maxfev_i in maxfev:                
         for num_try in range(num_tries): #retry fit num_tries times (with different random p0)
+            p0_new = get_p0(lower, upper) 
             try:
-                if pole_class == 0:
-                    lower = [re_min, -coeff_re_max, -coeff_re_max]
-                    upper = [re_max, coeff_re_max, coeff_re_max] 
-                    p0_new = get_p0(lower, upper)         
+                if pole_class == 0:                
                     params_tmp, _ = curve_fit(objective_1r_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_1r_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_1r_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_1r_jac_dual, xtol=xtol, method=method)
     
-                elif pole_class == 1:
-                    lower = [re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
-                    upper = [re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]   
-                    p0_new = get_p0(lower, upper)          
+                elif pole_class == 1:            
                     params_tmp, _ = curve_fit(objective_1c_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_1c_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_1c_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_1c_jac_dual, xtol=xtol, method=method)
     
                 elif pole_class == 2:
-                    lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max]
-                    upper = [re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max]   
-                    p0_new = get_p0(lower, upper)
                     params_tmp, _ = curve_fit(objective_2r_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_2r_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_2r_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_2r_jac_dual, xtol=xtol, method=method)
     
                 elif pole_class == 3:
-                    lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
-                    upper = [re_max, coeff_re_max, coeff_re_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
-                    p0_new = get_p0(lower, upper)
                     params_tmp, _ = curve_fit(objective_1r1c_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_1r1c_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_1r1c_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_1r1c_jac_dual, xtol=xtol, method=method)
     
                 elif pole_class == 4:
-                    lower = [re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
-                    upper = [re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
-                    p0_new = get_p0(lower, upper)
                     params_tmp, _ = curve_fit(objective_2c_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_2c_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_2c_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_2c_jac_dual, xtol=xtol, method=method)
     
                 elif pole_class == 5:
-                    lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max]
-                    upper = [re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max]
-                    p0_new = get_p0(lower, upper)
                     params_tmp, _ = curve_fit(objective_3r_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_3r_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_3r_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_3r_jac_dual, xtol=xtol, method=method)
     
                 elif pole_class == 6:
-                    lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, -coeff_re_max, -coeff_re_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
-                    upper = [re_max, coeff_re_max, coeff_re_max, re_max, coeff_re_max, coeff_re_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
-                    p0_new = get_p0(lower, upper)
                     params_tmp, _ = curve_fit(objective_2r1c_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_2r1c_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_2r1c_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_2r1c_jac_dual, xtol=xtol, method=method)
     
                 elif pole_class == 7:
-                    lower = [re_min, -coeff_re_max, -coeff_re_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
-                    upper = [re_max, coeff_re_max, coeff_re_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
-                    p0_new = get_p0(lower, upper)
                     params_tmp, _ = curve_fit(objective_1r2c_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_1r2c_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_1r2c_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_1r2c_jac_dual, xtol=xtol, method=method)
     
                 elif pole_class == 8:
-                    lower = [re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, -coeff_re_max, -coeff_im_max]
-                    upper = [re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, coeff_re_max, coeff_im_max]
-                    p0_new = get_p0(lower, upper)
                     params_tmp, _ = curve_fit(objective_3c_dual, grid_x, data_y, maxfev=maxfev_i, bounds=(lower, upper), p0=p0_new, jac=objective_3c_jac_dual, xtol=xtol, method=method) if with_bounds else \
                                   curve_fit(objective_3c_dual, grid_x, data_y, maxfev=maxfev_i, p0=p0_new, jac=objective_3c_jac_dual, xtol=xtol, method=method)
             
