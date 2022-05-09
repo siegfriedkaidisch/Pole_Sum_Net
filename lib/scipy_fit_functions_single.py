@@ -26,7 +26,7 @@ def get_scipy_pred_single(pole_class, grid_x, data_y,
                    coeff_re_max, coeff_re_min, 
                    coeff_im_max, coeff_im_min,
                    method='lm', with_bounds=False, 
-                   p0_data = np.nan
+                   p0_data = None
                    ):
     '''
     Uses Scipy curve_fit to fit different pole classes onto single (!) data sample
@@ -48,7 +48,7 @@ def get_scipy_pred_single(pole_class, grid_x, data_y,
     with_bounds: bool, default=False
         Shall the fit's parameters be contrained by bounds determined by coeff_re_max, coeff_re_min, coeff_im_max, coeff_im_min, re_min, re_max, im_min, im_max?
         
-    p0_data: list of 2 numpy.ndarrays of shapes (k,), where k depends on the pole class OR np.nan; default: np.nan
+    p0_data: list of 2 numpy.ndarrays of shapes (k,), where k depends on the pole class OR None; default: None
         Optional: Set initial parameter-guesses between p0_data[0]-p0_data[1] and p0_data[0]+p0_data[1]
    
     returns: numpy.ndarray of shape (k,)
@@ -97,9 +97,9 @@ def get_scipy_pred_single(pole_class, grid_x, data_y,
             lower = [re_min, im_min, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max, re_min, im_min, -coeff_re_max, -coeff_im_max]
             upper = [re_max, im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max, re_max, im_max, coeff_re_max, coeff_im_max]
                           
-        if not np.isnan(p0_data):
-            lower = np.maximum(p0_data[0]-p0_data[1], lower)
-            upper = np.minimum(p0_data[0]+p0_data[1], upper)
+        if not p0_data is None:
+            lower = np.maximum(p0_data[0]-p0_data[1], lower).ravel()
+            upper = np.minimum(p0_data[0]+p0_data[1], upper).ravel()
         return lower, upper
                 
     def get_p0(lower, upper):
