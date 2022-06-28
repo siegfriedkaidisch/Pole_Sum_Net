@@ -38,3 +38,51 @@ Pytorch Lightning (v.1.2.3, https://www.pytorchlightning.ai/)
 joblib (v. 1.1.0, https://joblib.readthedocs.io) 
 [wandb (v. 0.12.9, https://wandb.ai/)] 
 
+How to read the regressor output:
+Pole Class 0:   1 real pole,    0 cc pole pairs
+[pos_re, coeff_re, coeff_re]
+
+Pole Class 1:   0 real poles,   1 cc pole pair
+[pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im]
+
+Pole Class 2:   2 real poles,   0 cc pole pairs
+[pos_re, coeff_re, coeff_re, 
+ pos_re, coeff_re, coeff_re]
+
+Pole Class 3:   1 real pole,    1 cc pole pair
+[pos_re, coeff_re, coeff_re,
+ pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im]
+
+Pole Class 4:   0 real poles,   2 cc pole pairs
+[pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im,
+ pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im]
+
+Pole Class 5:   3 real poles,   0 cc pole pairs
+[pos_re, coeff_re, coeff_re,
+ pos_re, coeff_re, coeff_re,
+ pos_re, coeff_re, coeff_re]
+
+Pole Class 6:   2 real poles,   1 cc pole pair
+[pos_re, coeff_re, coeff_re,
+ pos_re, coeff_re, coeff_re,
+ pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im]
+
+Pole Class 7:   1 real pole,    2 cc pole pairs
+[pos_re, coeff_re, coeff_re,
+ pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im,
+ pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im]
+
+Pole Class 8:   0 real poles,   3 cc pole pairs
+[pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im,
+ pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im,
+ pos_re, pos_im, coeff_re, coeff_im, coeff_re, coeff_im]
+
+
+
+
+
+
+
+
+
+
