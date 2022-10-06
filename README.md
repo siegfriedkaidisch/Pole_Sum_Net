@@ -1,9 +1,6 @@
 # Pole_Sum_Net
 An ANN classifier and regressor to predict the number of poles and find the pole parameters in a sum of real poles and cc pole pairs
 
-Q: What is this?
-A: An ANN classifier and regressor to predict the number of poles and find the pole parameters in a sum of real poles and cc pole pairs
-
 Q: Where can it be applied?
 A: Suppose you have a function f(z), where z is complex. 
 Moreover, suppose that you know that f is a sum of N_r real poles and N_c complex conjugate pole pairs, where 1 <= N_r+N_c <=3, but you do not know N_r, N_c or the actual pole parameters (positions and coefficients). 
