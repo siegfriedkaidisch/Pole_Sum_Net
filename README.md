@@ -27,6 +27,7 @@ SciPy:
 1.) Use test_data.py and application_scipy_lm.py to apply SciPy's curve_fit function with the lm method onto your data.
 
 Used programs:
+
 Python (v. 3.9.7, https://www.python.org/) 
 numpy (v. 1.20.3,https://numpy.org/)
 Pytorch (v. 1.10.1, https://pytorch.org/) 
@@ -39,6 +40,7 @@ Pytorch Lightning (v.1.2.3, https://www.pytorchlightning.ai/)
 [wandb (v. 0.12.9, https://wandb.ai/)] 
 
 How to read the regressor output:
+
 Pole Class 0:   1 real pole,    0 cc pole pairs
 [pos_re, coeff_re, coeff_re]
 
