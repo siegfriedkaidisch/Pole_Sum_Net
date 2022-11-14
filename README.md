@@ -12,6 +12,7 @@ If this is not the case, i.e. your data consists only of values of a single pole
 
 Q: How does it work?
 A: Find details in my Masters thesis.
+https://unipub.uni-graz.at/obvugrhs/content/titleinfo/7708895?lang=en
 
 Q: How do I use it?
 A:
@@ -28,16 +29,16 @@ SciPy:
 
 Used programs:
 
-Python (v. 3.9.7, https://www.python.org/) 
+-Python (v. 3.9.7, https://www.python.org/) 
 numpy (v. 1.20.3,https://numpy.org/)
-Pytorch (v. 1.10.1, https://pytorch.org/) 
+-Pytorch (v. 1.10.1, https://pytorch.org/) 
 Pytorch Lightning (v.1.2.3, https://www.pytorchlightning.ai/)
-sci-kit learn (v. 1.0.2, https://scikit-learn.org/)
-scipy (v. 1.7.1, https://scipy.org/) 
-lmfit (v. 1.0.3, https://lmfit.github.io/lmfit-py/) 
-matplotlib (v. 3.4.3, https://matplotlib.org/) 
-joblib (v. 1.1.0, https://joblib.readthedocs.io) 
-[wandb (v. 0.12.9, https://wandb.ai/)] 
+-sci-kit learn (v. 1.0.2, https://scikit-learn.org/)
+-scipy (v. 1.7.1, https://scipy.org/) 
+-lmfit (v. 1.0.3, https://lmfit.github.io/lmfit-py/) 
+-matplotlib (v. 3.4.3, https://matplotlib.org/) 
+-joblib (v. 1.1.0, https://joblib.readthedocs.io) 
+-[wandb (v. 0.12.9, https://wandb.ai/)] 
 
 How to read the regressor output:
 
