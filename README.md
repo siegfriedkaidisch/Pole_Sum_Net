@@ -8,7 +8,7 @@ Finally, suppose that you have values of f on the real axis. For example, you ma
 Our classifier can tell you N_r and N_c and our regressor can tell you the actual pole parameters.
 Note: actually, the classifier and regressor assume, that your data consists of two of those functions/ data curves, which shall only differ by the pole coefficients. 
 I.e. one data sample shall consist of values f1(z1),f1(z2),...f1(z_n),f2(z1),f2(z2),...f2(zn), where z1,..zn are the used "grid" values on the real axis and f1 and f2 are the two pole functions with the same N_r, N_c and pole positions, but with differing pole coefficients.
-If this is not the case, i.e. your data consists only of values of a single pole function f1, you can still use this code and just append your data after itself, i.e. f1(z1),f1(z2),...f1(z_n) -> f1(z1),f1(z2),...f1(z_n),f1(z1),f1(z2),...f1(z_n) (this is equivalent to f1=f2)
+If this is not the case, i.e. your data consists only of values of a single pole function f1, the code can easily be adapted.
 
 Q: How does it work?
 A: Find details in my Masters thesis.
