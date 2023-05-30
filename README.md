@@ -9,6 +9,7 @@ Our classifier can tell you N_r and N_c and our regressor can tell you the actua
 Note: actually, the classifier and regressor assume, that your data consists of two of those functions/ data curves, which shall only differ by the pole coefficients. 
 I.e. one data sample shall consist of values f1(z1),f1(z2),...f1(z_n),f2(z1),f2(z2),...f2(zn), where z1,..zn are the used "grid" values on the real axis and f1 and f2 are the two pole functions with the same N_r, N_c and pole positions, but with differing pole coefficients.
 If this is not the case, i.e. your data consists only of values of a single pole function f1, the code can easily be adapted.
+(See also the "gap_equation" folder, where code is provided that can be used to generate Dyson-Schwinger equation results on which the ANNs can then be applied.)
 
 Q: How does it work?
 A: Find details in my Masters thesis.
@@ -29,16 +30,16 @@ SciPy:
 
 Used programs:
 
--Python (v. 3.9.7, https://www.python.org/) 
-numpy (v. 1.20.3,https://numpy.org/)
--Pytorch (v. 1.10.1, https://pytorch.org/) 
-Pytorch Lightning (v.1.2.3, https://www.pytorchlightning.ai/)
--sci-kit learn (v. 1.0.2, https://scikit-learn.org/)
--scipy (v. 1.7.1, https://scipy.org/) 
--lmfit (v. 1.0.3, https://lmfit.github.io/lmfit-py/) 
--matplotlib (v. 3.4.3, https://matplotlib.org/) 
--joblib (v. 1.1.0, https://joblib.readthedocs.io) 
--[wandb (v. 0.12.9, https://wandb.ai/)] 
+Python (v. 3.9.7, https://www.python.org/), 
+numpy (v. 1.20.3,https://numpy.org/), 
+Pytorch (v. 1.10.1, https://pytorch.org/), 
+Pytorch Lightning (v.1.2.3, https://www.pytorchlightning.ai/), 
+sci-kit learn (v. 1.0.2, https://scikit-learn.org/), 
+scipy (v. 1.7.1, https://scipy.org/), 
+lmfit (v. 1.0.3, https://lmfit.github.io/lmfit-py/), 
+matplotlib (v. 3.4.3, https://matplotlib.org/), 
+joblib (v. 1.1.0, https://joblib.readthedocs.io), 
+[wandb (v. 0.12.9, https://wandb.ai/)] 
 
 How to read the regressor output:
 
